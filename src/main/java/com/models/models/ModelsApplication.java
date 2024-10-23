@@ -10,4 +10,7 @@ public class ModelsApplication {
 		SpringApplication.run(ModelsApplication.class, args);
 	}
 
+
+	//java -jar models-0.0.1-SNAPSHOT.jar --spring.datasource.url=jdbc:mysql://localhost:3306/BD2
+
 }
