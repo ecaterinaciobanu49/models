@@ -1,6 +1,8 @@
 package com.models.models.controllers;
 
+import com.models.models.allModels.Account;
 import com.models.models.allModels.Customer;
+import com.models.models.repositories.AccountRepository;
 import com.models.models.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,9 @@ public class MainController {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @GetMapping("/allCustomers")
     List<Customer> getAllCustomers() {
@@ -46,4 +51,14 @@ public class MainController {
         customerRepository.deleteById(customerToDelete.getCustomerId());
     }
 
+    @PostMapping("/addNewAccount")
+    Account addNewAccount(@RequestBody Account account) {
+        return accountRepository.save(account);
+    }
+
+    @PostMapping("/getAccountsBySubjcetCode/{subjectCode}")
+    List<Account> getAllAccountsBySubjectCode(@PathVariable String subjectCode) {
+        Customer customer = customerRepository.findBySubjectCode(subjectCode);
+        return accountRepository.findAllAccountsByCustomerId(customer.getCustomerId());
+    }
 }
