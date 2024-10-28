@@ -13,10 +13,13 @@ public class Customer {
     @Column(name = "customer_id")
     private Long customerId;
 
-    @Column(name = "name")
+    @Column(name = "subject_code")
+    private String subjectCode;
+
+    @Column(name = "lastname")
     private String name;
 
-    @Column(name = "sur_name")
+    @Column(name = "firstname")
     private String surName;
 
     @Column(name = "email")
