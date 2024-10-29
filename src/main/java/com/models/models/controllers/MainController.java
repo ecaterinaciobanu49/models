@@ -47,10 +47,12 @@ public class MainController {
     }
 
 
-    //TODO edit this method
-    @PutMapping("editCustomer/{subjectCode}")
-    Customer editCustomer(@PathVariable String subjectCode, @RequestBody Customer editedCustomer) {
-        return customerRepository.save(editedCustomer);
+
+    @PutMapping("editCustomerEmail/{subjectCode}")
+    Customer editCustomer(@PathVariable String subjectCode, @RequestBody String newEmail) {
+        Customer customer = customerRepository.findBySubjectCode(subjectCode);
+        customer.setEmail(newEmail);
+        return customerRepository.save(customer);
     }
 
     @DeleteMapping("/deleteCustumer/{subjectCode}")
@@ -76,11 +78,10 @@ public class MainController {
     }
 
 
-    //TODO edit method
-    @PutMapping("/editAccount/{accountNumber}")
-    Account editAccount(@PathVariable String accountNumber, @RequestBody Account editedAccount) {
+    @PutMapping("/updateAccountBalance/{accountNumber}")
+    Account editAccount(@PathVariable String accountNumber, @RequestBody Double balance) {
         Account account = accountRepository.findByAccountNumber(accountNumber);
-        BeanUtils.copyProperties(account, editedAccount);
+        account.setBalance(balance);
 
         return accountRepository.save(account);
     }
@@ -121,6 +122,15 @@ public class MainController {
     @GetMapping("/getLoanById/{loanId}")
     Loan getLoanById(@PathVariable Long loanId) {
         return loanRepository.findByLoanId(loanId);
+    }
+
+    @PutMapping("/updateAmount/{loanId}")
+    Loan updateOutstandingAmount(@PathVariable Long loanId, @RequestBody Double balance) {
+        Loan loan = loanRepository.findByLoanId(loanId);
+        double currentAmount = loan.getOutstandingAmount();
+        loan.setOutstandingAmount(currentAmount - balance);
+
+        return loanRepository.save(loan);
     }
 
     @PutMapping("/closeLoan/{loanId}")
