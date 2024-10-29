@@ -3,11 +3,12 @@ package com.models.models.controllers;
 import com.models.models.allModels.Account;
 import com.models.models.allModels.Customer;
 import com.models.models.allModels.Status;
+import com.models.models.allModels.Transaction;
 import com.models.models.repositories.AccountRepository;
 import com.models.models.repositories.CustomerRepository;
+import com.models.models.repositories.TransactionRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class MainController {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     @GetMapping("/allCustomers")
     List<Customer> getAllCustomers() {
@@ -87,5 +91,19 @@ public class MainController {
         accountRepository.save(account);
     }
 
+    @PostMapping("/addTransaction")
+    Transaction addNewTransaction(@RequestBody Transaction transaction) {
+        return transactionRepository.save(transaction);
+    }
+
+    @GetMapping("/getAllTransactionByAccountId/{accountId}")
+    List<Transaction> getAllTransactionByAccountId(@PathVariable Long accountId) {
+        return transactionRepository.findAllTransactionsByAccountId(accountId);
+    }
+
+    @GetMapping("/getTransactionByTransactionId/{transactionId}")
+    Transaction getTransactionById(@PathVariable Long transactionId) {
+        return transactionRepository.findByTransactionId(transactionId);
+    }
 
 }
