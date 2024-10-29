@@ -1,10 +1,7 @@
 package com.models.models.controllers;
 
 import com.models.models.allModels.*;
-import com.models.models.repositories.AccountRepository;
-import com.models.models.repositories.CustomerRepository;
-import com.models.models.repositories.LoanRepository;
-import com.models.models.repositories.TransactionRepository;
+import com.models.models.repositories.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +22,9 @@ public class MainController {
 
     @Autowired
     private LoanRepository loanRepository;
+
+    @Autowired
+    private CardRepository cardRepository;
 
     @GetMapping("/allCustomers")
     List<Customer> getAllCustomers() {
@@ -128,6 +128,23 @@ public class MainController {
         Loan loan = loanRepository.findByLoanId(loanId);
         loan.setStatus(LoanStatus.CLOSED);
         loanRepository.save(loan);
+    }
+
+    @PostMapping("/createNewCard")
+    Card addNewCard(@RequestBody Card card) {
+        return cardRepository.save(card);
+    }
+
+    @GetMapping("/getCardsBySubjectCode/{subjectCode}")
+    List<Card> getCardsBySubjectCode(@PathVariable String subjectCode) {
+        Customer customer = customerRepository.findBySubjectCode(subjectCode);
+
+        return  cardRepository.findAllCardsByCustomerId(customer.getCustomerId());
+    }
+
+    @GetMapping("/cards/{cardId}")
+    Card getCardById(@PathVariable Long cardId) {
+        return cardRepository.findByCardId(cardId);
     }
 
 }
