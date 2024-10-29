@@ -25,6 +25,9 @@ public class Loan {
     @Column(name = "percent")
     private int percent;
 
+    @Column(name = "status")
+    private LoanStatus status;
+
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;

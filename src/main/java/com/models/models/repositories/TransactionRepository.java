@@ -1,6 +1,5 @@
 package com.models.models.repositories;
 
-import com.models.models.allModels.Account;
 import com.models.models.allModels.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,11 +1,9 @@
 package com.models.models.controllers;
 
-import com.models.models.allModels.Account;
-import com.models.models.allModels.Customer;
-import com.models.models.allModels.Status;
-import com.models.models.allModels.Transaction;
+import com.models.models.allModels.*;
 import com.models.models.repositories.AccountRepository;
 import com.models.models.repositories.CustomerRepository;
+import com.models.models.repositories.LoanRepository;
 import com.models.models.repositories.TransactionRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,9 @@ public class MainController {
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
+    private LoanRepository loanRepository;
 
     @GetMapping("/allCustomers")
     List<Customer> getAllCustomers() {
@@ -104,6 +105,29 @@ public class MainController {
     @GetMapping("/getTransactionByTransactionId/{transactionId}")
     Transaction getTransactionById(@PathVariable Long transactionId) {
         return transactionRepository.findByTransactionId(transactionId);
+    }
+
+    @PostMapping("/createNewLoan")
+    Loan addNewLoan(@RequestBody Loan loan) {
+        return loanRepository.save(loan);
+    }
+
+    @GetMapping("/retrieveLoansForACustumer/{subjectCode}")
+    List<Loan> retrieveLoansForACustumer(@PathVariable String subjectCode) {
+        Customer customer = customerRepository.findBySubjectCode(subjectCode);
+        return loanRepository.findAllByCostumerId(customer.getCustomerId());
+    }
+
+    @GetMapping("/getLoanById/{loanId}")
+    Loan getLoanById(@PathVariable Long loanId) {
+        return loanRepository.findByLoanId(loanId);
+    }
+
+    @PutMapping("/closeLoan/{loanId}")
+    void closeLoan(@PathVariable Long loanId) {
+        Loan loan = loanRepository.findByLoanId(loanId);
+        loan.setStatus(LoanStatus.CLOSED);
+        loanRepository.save(loan);
     }
 
 }
