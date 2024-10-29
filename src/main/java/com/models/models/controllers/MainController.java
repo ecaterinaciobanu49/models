@@ -2,9 +2,12 @@ package com.models.models.controllers;
 
 import com.models.models.allModels.Account;
 import com.models.models.allModels.Customer;
+import com.models.models.allModels.Status;
 import com.models.models.repositories.AccountRepository;
 import com.models.models.repositories.CustomerRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,4 +64,28 @@ public class MainController {
         Customer customer = customerRepository.findBySubjectCode(subjectCode);
         return accountRepository.findAllAccountsByCustomerId(customer.getCustomerId());
     }
+
+    @GetMapping("/getAnAccountByAccountNumber")
+    Account getAccountByAccountNumber(@RequestBody String accountNumber) {
+        return accountRepository.findByAccountNumber(accountNumber);
+    }
+
+
+    //TODO edit method
+    @PutMapping("/editAccount/{accountNumber}")
+    Account editAccount(@PathVariable String accountNumber, @RequestBody Account editedAccount) {
+        Account account = accountRepository.findByAccountNumber(accountNumber);
+        BeanUtils.copyProperties(account, editedAccount);
+
+        return accountRepository.save(account);
+    }
+
+    @PutMapping("/closeAccount/{accountNumber}")
+    void closeAccount(@PathVariable String accountNumber) {
+        Account account = accountRepository.findByAccountNumber(accountNumber);
+        account.setStatus(Status.CLOSED);
+        accountRepository.save(account);
+    }
+
+
 }
