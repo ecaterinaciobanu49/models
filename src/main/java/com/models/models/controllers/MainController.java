@@ -36,11 +36,6 @@ public class MainController {
         return customerRepository.save(customer);
     }
 
-    @GetMapping("/findCustomerByLastNameAndFirstName")
-    Customer getCostumerByLastNameAndFirstName(@RequestBody String lastName, @RequestBody String firstName) {
-        return customerRepository.findByLastnameAndFirstname(lastName, firstName);
-    }
-
     @GetMapping("/findCustomerBySubjectCode/{subjectCode}")
     Customer getCostumerBySubjectCode(@PathVariable String subjectCode) {
         return customerRepository.findBySubjectCode(subjectCode);

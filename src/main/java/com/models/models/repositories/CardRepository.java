@@ -3,9 +3,11 @@ package com.models.models.repositories;
 import com.models.models.allModels.Card;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
 
     Card save(Card card);

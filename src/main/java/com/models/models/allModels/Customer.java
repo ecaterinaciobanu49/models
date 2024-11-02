@@ -17,10 +17,10 @@ public class Customer {
     private String subjectCode;
 
     @Column(name = "lastname")
-    private String name;
+    private String lastname;
 
     @Column(name = "firstname")
-    private String surName;
+    private String firstname;
 
     @Column(name = "email")
     private String email;
