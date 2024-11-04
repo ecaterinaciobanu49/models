@@ -61,14 +61,14 @@ public class MainController {
         return accountRepository.save(account);
     }
 
-    @PostMapping("/getAccountsBySubjcetCode/{subjectCode}")
+    @GetMapping("/getAccountsBySubjcetCode/{subjectCode}")
     List<Account> getAllAccountsBySubjectCode(@PathVariable String subjectCode) {
         Customer customer = customerRepository.findBySubjectCode(subjectCode);
         return accountRepository.findAllAccountsByCustomerId(customer.getCustomerId());
     }
 
-    @GetMapping("/getAnAccountByAccountNumber")
-    Account getAccountByAccountNumber(@RequestBody String accountNumber) {
+    @GetMapping("/getAnAccountByAccountNumber/{accountNumber}")
+    Account getAccountByAccountNumber(@PathVariable String accountNumber) {
         return accountRepository.findByAccountNumber(accountNumber);
     }
 
