@@ -2,7 +2,7 @@ package com.models.models.controllers;
 
 import com.models.models.allModels.*;
 import com.models.models.repositories.*;
-import org.springframework.beans.BeanUtils;
+import com.models.models.services.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,144 +12,114 @@ import java.util.List;
 public class MainController {
 
     @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private TransactionRepository transactionRepository;
-
-    @Autowired
-    private LoanRepository loanRepository;
-
-    @Autowired
-    private CardRepository cardRepository;
+    private MainService mainService;
 
     @GetMapping("/allCustomers")
     List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+        return mainService.getAllCustomers();
     }
 
     @PostMapping("/customer")
     Customer createNewCustomer(@RequestBody Customer customer) {
-        return customerRepository.save(customer);
+        return mainService.createNewCustomer(customer);
     }
 
     @GetMapping("/findCustomerBySubjectCode/{subjectCode}")
     Customer getCostumerBySubjectCode(@PathVariable String subjectCode) {
-        return customerRepository.findBySubjectCode(subjectCode);
+        return mainService.getCostumerBySubjectCode(subjectCode);
     }
 
 
 
     @PutMapping("editCustomerEmail/{subjectCode}")
     Customer editCustomer(@PathVariable String subjectCode, @RequestBody String newEmail) {
-        Customer customer = customerRepository.findBySubjectCode(subjectCode);
-        customer.setEmail(newEmail);
-        return customerRepository.save(customer);
+        return mainService.editCustomer(subjectCode, newEmail);
     }
 
     @DeleteMapping("/deleteCustumer/{subjectCode}")
     void deleteCostumer(@PathVariable String subjectCode) {
-        Customer customerToDelete = customerRepository.findBySubjectCode(subjectCode);
-        customerRepository.deleteById(customerToDelete.getCustomerId());
+        mainService.deleteCostumer(subjectCode);
     }
 
     @PostMapping("/addNewAccount")
     Account addNewAccount(@RequestBody Account account) {
-        return accountRepository.save(account);
+        return mainService.addNewAccount(account);
     }
 
     @GetMapping("/getAccountsBySubjcetCode/{subjectCode}")
     List<Account> getAllAccountsBySubjectCode(@PathVariable String subjectCode) {
-        Customer customer = customerRepository.findBySubjectCode(subjectCode);
-        return accountRepository.findAllAccountsByCustomerId(customer.getCustomerId());
+        return mainService.getAllAccountsBySubjectCode(subjectCode);
     }
 
     @GetMapping("/getAnAccountByAccountNumber/{accountNumber}")
     Account getAccountByAccountNumber(@PathVariable String accountNumber) {
-        return accountRepository.findByAccountNumber(accountNumber);
+        return mainService.getAccountByAccountNumber(accountNumber);
     }
 
 
     @PutMapping("/updateAccountBalance/{accountNumber}")
     Account editAccount(@PathVariable String accountNumber, @RequestBody Double balance) {
-        Account account = accountRepository.findByAccountNumber(accountNumber);
-        account.setBalance(balance);
-
-        return accountRepository.save(account);
+        return mainService.editAccount(accountNumber, balance);
     }
 
     @PutMapping("/closeAccount/{accountNumber}")
     void closeAccount(@PathVariable String accountNumber) {
-        Account account = accountRepository.findByAccountNumber(accountNumber);
-        account.setStatus(Status.CLOSED);
-        accountRepository.save(account);
+        mainService.closeAccount(accountNumber);
     }
 
     @PostMapping("/addTransaction")
     Transaction addNewTransaction(@RequestBody Transaction transaction) {
-        return transactionRepository.save(transaction);
+        return mainService.addNewTransaction(transaction);
     }
 
     @GetMapping("/getAllTransactionByAccountId/{accountId}")
     List<Transaction> getAllTransactionByAccountId(@PathVariable Long accountId) {
-        return transactionRepository.findAllTransactionsByAccountId(accountId);
+        return mainService.getAllTransactionByAccountId(accountId);
     }
 
     @GetMapping("/getTransactionByTransactionId/{transactionId}")
     Transaction getTransactionById(@PathVariable Long transactionId) {
-        return transactionRepository.findByTransactionId(transactionId);
+        return mainService.getTransactionById(transactionId);
     }
 
     @PostMapping("/createNewLoan")
     Loan addNewLoan(@RequestBody Loan loan) {
-        return loanRepository.save(loan);
+        return mainService.addNewLoan(loan);
     }
 
     @GetMapping("/retrieveLoansForACustumer/{subjectCode}")
     List<Loan> retrieveLoansForACustumer(@PathVariable String subjectCode) {
-        Customer customer = customerRepository.findBySubjectCode(subjectCode);
-        return loanRepository.findAllByCostumerId(customer.getCustomerId());
+        return mainService.retrieveLoansForACustumer(subjectCode);
     }
 
     @GetMapping("/getLoanById/{loanId}")
     Loan getLoanById(@PathVariable Long loanId) {
-        return loanRepository.findByLoanId(loanId);
+        return mainService.getLoanById(loanId);
     }
 
     @PutMapping("/updateAmount/{loanId}")
     Loan updateOutstandingAmount(@PathVariable Long loanId, @RequestBody Double balance) {
-        Loan loan = loanRepository.findByLoanId(loanId);
-        double currentAmount = loan.getOutstandingAmount();
-        loan.setOutstandingAmount(currentAmount - balance);
-
-        return loanRepository.save(loan);
+        return mainService.updateOutstandingAmount(loanId, balance);
     }
 
     @PutMapping("/closeLoan/{loanId}")
     void closeLoan(@PathVariable Long loanId) {
-        Loan loan = loanRepository.findByLoanId(loanId);
-        loan.setStatus(LoanStatus.CLOSED);
-        loanRepository.save(loan);
+        mainService.closeLoan(loanId);
     }
 
     @PostMapping("/createNewCard")
     Card addNewCard(@RequestBody Card card) {
-        return cardRepository.save(card);
+        return mainService.addNewCard(card);
     }
 
     @GetMapping("/getCardsBySubjectCode/{subjectCode}")
     List<Card> getCardsBySubjectCode(@PathVariable String subjectCode) {
-        Customer customer = customerRepository.findBySubjectCode(subjectCode);
-
-        return  cardRepository.findAllCardsByCustomerId(customer.getCustomerId());
+        return  mainService.getCardsBySubjectCode(subjectCode);
     }
 
     @GetMapping("/cards/{cardId}")
     Card getCardById(@PathVariable Long cardId) {
-        return cardRepository.findByCardId(cardId);
+        return mainService.getCardById(cardId);
     }
 
 }
