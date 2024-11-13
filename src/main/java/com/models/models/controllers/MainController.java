@@ -1,9 +1,9 @@
 package com.models.models.controllers;
 
 import com.models.models.allModels.*;
-import com.models.models.repositories.*;
 import com.models.models.services.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,115 +11,116 @@ import java.util.List;
 @RestController
 public class MainController {
 
+    @Qualifier("mainServiceImpl")
     @Autowired
     private MainService mainService;
 
+
+
     @GetMapping("/allCustomers")
-    List<Customer> getAllCustomers() {
-        return mainService.getAllCustomers();
+    List<Customer> getAllCustomers(@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.getAllCustomers(steps);
     }
 
     @PostMapping("/customer")
-    Customer createNewCustomer(@RequestBody Customer customer) {
-        return mainService.createNewCustomer(customer);
+    Customer createNewCustomer(@RequestBody Customer customer ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.createNewCustomer(customer, steps);
     }
 
     @GetMapping("/findCustomerBySubjectCode/{subjectCode}")
-    Customer getCostumerBySubjectCode(@PathVariable String subjectCode) {
-        return mainService.getCostumerBySubjectCode(subjectCode);
+    Customer getCostumerBySubjectCode(@PathVariable String subjectCode ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.getCostumerBySubjectCode(subjectCode, steps);
     }
 
-
-
     @PutMapping("editCustomerEmail/{subjectCode}")
-    Customer editCustomer(@PathVariable String subjectCode, @RequestBody String newEmail) {
-        return mainService.editCustomer(subjectCode, newEmail);
+    Customer editCustomer(@PathVariable String subjectCode, @RequestBody String newEmail ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.editCustomer(subjectCode, newEmail, steps);
     }
 
     @DeleteMapping("/deleteCustumer/{subjectCode}")
-    void deleteCostumer(@PathVariable String subjectCode) {
-        mainService.deleteCostumer(subjectCode);
+    void deleteCostumer(@PathVariable String subjectCode ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        mainService.deleteCostumer(subjectCode, steps);
     }
 
     @PostMapping("/addNewAccount")
-    Account addNewAccount(@RequestBody Account account) {
-        return mainService.addNewAccount(account);
+    Account addNewAccount(@RequestBody Account account ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.addNewAccount(account, steps);
     }
 
     @GetMapping("/getAccountsBySubjcetCode/{subjectCode}")
-    List<Account> getAllAccountsBySubjectCode(@PathVariable String subjectCode) {
-        return mainService.getAllAccountsBySubjectCode(subjectCode);
+    List<Account> getAllAccountsBySubjectCode(@PathVariable String subjectCode ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.getAllAccountsBySubjectCode(subjectCode, steps);
     }
 
     @GetMapping("/getAnAccountByAccountNumber/{accountNumber}")
-    Account getAccountByAccountNumber(@PathVariable String accountNumber) {
-        return mainService.getAccountByAccountNumber(accountNumber);
+    Account getAccountByAccountNumber(@PathVariable String accountNumber ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.getAccountByAccountNumber(accountNumber, steps);
     }
 
 
     @PutMapping("/updateAccountBalance/{accountNumber}")
-    Account editAccount(@PathVariable String accountNumber, @RequestBody Double balance) {
-        return mainService.editAccount(accountNumber, balance);
+    Account editAccount(@PathVariable String accountNumber, @RequestBody Double balance ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.editAccount(accountNumber, balance, steps);
     }
 
     @PutMapping("/closeAccount/{accountNumber}")
-    void closeAccount(@PathVariable String accountNumber) {
-        mainService.closeAccount(accountNumber);
+    void closeAccount(@PathVariable String accountNumber ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        mainService.closeAccount(accountNumber, steps);
     }
 
     @PostMapping("/addTransaction")
-    Transaction addNewTransaction(@RequestBody Transaction transaction) {
-        return mainService.addNewTransaction(transaction);
+    Transaction addNewTransaction(@RequestBody Transaction transaction ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.addNewTransaction(transaction, steps);
     }
 
     @GetMapping("/getAllTransactionByAccountId/{accountId}")
-    List<Transaction> getAllTransactionByAccountId(@PathVariable Long accountId) {
-        return mainService.getAllTransactionByAccountId(accountId);
+    List<Transaction> getAllTransactionByAccountId(@PathVariable Long accountId ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.getAllTransactionByAccountId(accountId, steps);
     }
 
     @GetMapping("/getTransactionByTransactionId/{transactionId}")
-    Transaction getTransactionById(@PathVariable Long transactionId) {
-        return mainService.getTransactionById(transactionId);
+    Transaction getTransactionById(@PathVariable Long transactionId,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.getTransactionById(transactionId, steps);
     }
 
     @PostMapping("/createNewLoan")
-    Loan addNewLoan(@RequestBody Loan loan) {
-        return mainService.addNewLoan(loan);
+    Loan addNewLoan(@RequestBody Loan loan ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.addNewLoan(loan, steps);
     }
 
     @GetMapping("/retrieveLoansForACustumer/{subjectCode}")
-    List<Loan> retrieveLoansForACustumer(@PathVariable String subjectCode) {
-        return mainService.retrieveLoansForACustumer(subjectCode);
+    List<Loan> retrieveLoansForACustumer(@PathVariable String subjectCode ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.retrieveLoansForACustumer(subjectCode, steps);
     }
 
     @GetMapping("/getLoanById/{loanId}")
-    Loan getLoanById(@PathVariable Long loanId) {
-        return mainService.getLoanById(loanId);
+    Loan getLoanById(@PathVariable Long loanId ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.getLoanById(loanId, steps);
     }
 
     @PutMapping("/updateAmount/{loanId}")
-    Loan updateOutstandingAmount(@PathVariable Long loanId, @RequestBody Double balance) {
-        return mainService.updateOutstandingAmount(loanId, balance);
+    Loan updateOutstandingAmount(@PathVariable Long loanId, @RequestBody Double balance ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.updateOutstandingAmount(loanId, balance, steps);
     }
 
     @PutMapping("/closeLoan/{loanId}")
-    void closeLoan(@PathVariable Long loanId) {
-        mainService.closeLoan(loanId);
+    void closeLoan(@PathVariable Long loanId, @RequestParam(value = "steps", defaultValue = "3") int steps) {
+        mainService.closeLoan(loanId, steps);
     }
 
     @PostMapping("/createNewCard")
-    Card addNewCard(@RequestBody Card card) {
-        return mainService.addNewCard(card);
+    Card addNewCard(@RequestBody Card card ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.addNewCard(card, steps);
     }
 
     @GetMapping("/getCardsBySubjectCode/{subjectCode}")
-    List<Card> getCardsBySubjectCode(@PathVariable String subjectCode) {
-        return  mainService.getCardsBySubjectCode(subjectCode);
+    List<Card> getCardsBySubjectCode(@PathVariable String subjectCode ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return  mainService.getCardsBySubjectCode(subjectCode, steps);
     }
 
     @GetMapping("/cards/{cardId}")
-    Card getCardById(@PathVariable Long cardId) {
-        return mainService.getCardById(cardId);
+    Card getCardById(@PathVariable Long cardId ,@RequestParam(value = "steps", defaultValue = "3") int steps) {
+        return mainService.getCardById(cardId, steps);
     }
 
 }

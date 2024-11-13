@@ -3,14 +3,14 @@ package com.models.models.services.impl;
 import com.models.models.allModels.*;
 import com.models.models.repositories.*;
 import com.models.models.services.MainService;
+import com.models.models.services.RequestSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MainServiceImpl implements MainService {
-
+public class RingBasedHeterogeneousService implements MainService {
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -27,13 +27,21 @@ public class MainServiceImpl implements MainService {
     private CardRepository cardRepository;
 
     @Override
-    public List<Customer> getAllCustomers(int steps) {
+    public List<Customer> getAllCustomers( int steps) {
         return customerRepository.findAll();
     }
 
+    //TODO change
     @Override
     public Customer createNewCustomer(Customer customer, int steps) {
-        return customerRepository.save(customer);
+        if(steps == 0) {
+            return customerRepository.save(customer);
+        } else {
+            steps--;
+//            RequestSender.
+        }
+
+        return null;
     }
 
     @Override
@@ -145,6 +153,4 @@ public class MainServiceImpl implements MainService {
     public Card getCardById(Long cardId, int steps) {
         return cardRepository.findByCardId(cardId);
     }
-
-
 }

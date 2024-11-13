@@ -51,12 +51,12 @@ public class MasterSlaveImpl implements MainService {
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
+    public List<Customer> getAllCustomers( int steps) {
         return customerRepository.findAll();
     }
 
     @Override
-    public Customer createNewCustomer(Customer customer) {
+    public Customer createNewCustomer(Customer customer, int steps) {
         synchronized (this) {
             Command command = new Command() {
                 @Override
@@ -72,12 +72,12 @@ public class MasterSlaveImpl implements MainService {
     }
 
     @Override
-    public Customer getCostumerBySubjectCode(String subjectCode) {
+    public Customer getCostumerBySubjectCode(String subjectCode, int steps) {
         return customerRepository.findBySubjectCode(subjectCode);
     }
 
     @Override
-    public Customer editCustomer(String subjectCode, String newEmail) {
+    public Customer editCustomer(String subjectCode, String newEmail, int steps) {
         synchronized (this) {
             Command command = new Command() {
                 @Override
@@ -95,7 +95,7 @@ public class MasterSlaveImpl implements MainService {
     }
 
     @Override
-    public void deleteCostumer(String subjectCode) {
+    public void deleteCostumer(String subjectCode, int steps) {
         synchronized (this) {
             Command command = new Command() {
                 @Override
@@ -112,7 +112,7 @@ public class MasterSlaveImpl implements MainService {
     }
 
     @Override
-    public Account addNewAccount(Account account) {
+    public Account addNewAccount(Account account, int steps) {
         synchronized (this) {
             Command command = new Command() {
                 @Override
@@ -128,18 +128,18 @@ public class MasterSlaveImpl implements MainService {
     }
 
     @Override
-    public List<Account> getAllAccountsBySubjectCode(String subjectCode) {
+    public List<Account> getAllAccountsBySubjectCode(String subjectCode, int steps) {
         Customer customer = customerRepository.findBySubjectCode(subjectCode);
         return accountRepository.findAllAccountsByCustomerId(customer.getCustomerId());
     }
 
     @Override
-    public Account getAccountByAccountNumber(String accountNumber) {
+    public Account getAccountByAccountNumber(String accountNumber, int steps) {
         return accountRepository.findByAccountNumber(accountNumber);
     }
 
     @Override
-    public Account editAccount(String accountNumber, Double balance) {
+    public Account editAccount(String accountNumber, Double balance, int steps) {
         synchronized (this) {
             Command command = new Command() {
                 @Override
@@ -157,7 +157,7 @@ public class MasterSlaveImpl implements MainService {
     }
 
     @Override
-    public void closeAccount(String accountNumber) {
+    public void closeAccount(String accountNumber, int steps) {
         synchronized (this) {
             Command command = new Command() {
                 @Override
@@ -175,7 +175,7 @@ public class MasterSlaveImpl implements MainService {
     }
 
     @Override
-    public Transaction addNewTransaction(Transaction transaction) {
+    public Transaction addNewTransaction(Transaction transaction, int steps) {
         synchronized (this) {
             Command command = new Command() {
                 @Override
@@ -191,17 +191,17 @@ public class MasterSlaveImpl implements MainService {
     }
 
     @Override
-    public List<Transaction> getAllTransactionByAccountId(Long accountId) {
+    public List<Transaction> getAllTransactionByAccountId(Long accountId, int steps) {
         return transactionRepository.findAllTransactionsByAccountId(accountId);
     }
 
     @Override
-    public Transaction getTransactionById(Long transactionId) {
+    public Transaction getTransactionById(Long transactionId, int steps) {
         return transactionRepository.findByTransactionId(transactionId);
     }
 
     @Override
-    public Loan addNewLoan(Loan loan) {
+    public Loan addNewLoan(Loan loan, int steps) {
         synchronized (this) {
             Command command = new Command() {
                 @Override
@@ -218,18 +218,18 @@ public class MasterSlaveImpl implements MainService {
 
 
     @Override
-    public List<Loan> retrieveLoansForACustumer(String subjectCode) {
+    public List<Loan> retrieveLoansForACustumer(String subjectCode, int steps) {
         Customer customer = customerRepository.findBySubjectCode(subjectCode);
         return loanRepository.findAllByCostumerId(customer.getCustomerId());
     }
 
     @Override
-    public Loan getLoanById(Long loanId) {
+    public Loan getLoanById(Long loanId, int steps) {
         return loanRepository.findByLoanId(loanId);
     }
 
     @Override
-    public Loan updateOutstandingAmount(Long loanId, Double balance) {
+    public Loan updateOutstandingAmount(Long loanId, Double balance, int steps) {
         synchronized (this) {
             Command command = new Command() {
                 @Override
@@ -248,7 +248,7 @@ public class MasterSlaveImpl implements MainService {
     }
 
     @Override
-    public void closeLoan(Long loanId) {
+    public void closeLoan(Long loanId, int steps) {
         synchronized (this) {
             Command command = new Command() {
                 @Override
@@ -266,7 +266,7 @@ public class MasterSlaveImpl implements MainService {
     }
 
     @Override
-    public Card addNewCard(Card card) {
+    public Card addNewCard(Card card, int steps) {
         synchronized (this) {
             Command command = new Command() {
                 @Override
@@ -282,13 +282,13 @@ public class MasterSlaveImpl implements MainService {
     }
 
     @Override
-    public List<Card> getCardsBySubjectCode(String subjectCode) {
+    public List<Card> getCardsBySubjectCode(String subjectCode, int steps) {
         Customer customer = customerRepository.findBySubjectCode(subjectCode);
         return cardRepository.findAllCardsByCustomerId(customer.getCustomerId());
     }
 
     @Override
-    public Card getCardById(Long cardId) {
+    public Card getCardById(Long cardId, int steps) {
         return cardRepository.findByCardId(cardId);
     }
 }
